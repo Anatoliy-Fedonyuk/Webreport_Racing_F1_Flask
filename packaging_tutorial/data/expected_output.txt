@@ -1,0 +1,25 @@
+    -----------   Report of Monaco 2018 Racing F1   -----------
+╭──────────┬────────┬───────────────────┬───────────────────────────┬────────────╮
+│   №/RACE │ CODE   │ NAME DRIVER       │ TEAM FORMULA 1            │ BEST LAP   │
+├──────────┼────────┼───────────────────┼───────────────────────────┼────────────┤
+│        1 │ SVF    │ Sebastian Vettel  │ FERRARI                   │ 1:04:415   │
+│        2 │ VBM    │ Valtteri Bottas   │ MERCEDES                  │ 1:12:434   │
+│        3 │ SVM    │ Stoffel Vandoorne │ MCLAREN RENAULT           │ 1:12:463   │
+│        4 │ KRF    │ Kimi Räikkönen    │ FERRARI                   │ 1:12:639   │
+│        5 │ FAM    │ Fernando Alonso   │ MCLAREN RENAULT           │ 1:12:657   │
+│        6 │ CLS    │ Charles Leclerc   │ SAUBER FERRARI            │ 1:12:829   │
+│        7 │ SPF    │ Sergio Perez      │ FORCE INDIA MERCEDES      │ 1:12:848   │
+│        8 │ RGH    │ Romain Grosjean   │ HAAS FERRARI              │ 1:12:930   │
+│        9 │ PGS    │ Pierre Gasly      │ SCUDERIA TORO ROSSO HONDA │ 1:12:941   │
+│       10 │ CSR    │ Carlos Sainz      │ RENAULT                   │ 1:12:950   │
+│       11 │ NHR    │ Nico Hulkenberg   │ RENAULT                   │ 1:13:650   │
+│       12 │ BHS    │ Brendon Hartley   │ SCUDERIA TORO ROSSO HONDA │ 1:13:179   │
+│       13 │ MES    │ Marcus Ericsson   │ SAUBER FERRARI            │ 1:13:265   │
+│       14 │ LSW    │ Lance Stroll      │ WILLIAMS MERCEDES         │ 1:13:323   │
+│       15 │ KMH    │ Kevin Magnussen   │ HAAS FERRARI              │ 1:13:393   │
+----------------------------------------------------------------------------------
+│       16 │ DRR    │ Daniel Ricciardo  │ RED BULL RACING TAG HEUER │ 2:47:987   │
+│       17 │ SSW    │ Sergey Sirotkin   │ WILLIAMS MERCEDES         │ 4:47:294   │
+│       18 │ EOF    │ Esteban Ocon      │ FORCE INDIA MERCEDES      │ 5:46:972   │
+│       19 │ LHM    │ Lewis Hamilton    │ MERCEDES                  │ 6:47:540   │
+╰──────────┴────────┴───────────────────┴───────────────────────────┴────────────╯

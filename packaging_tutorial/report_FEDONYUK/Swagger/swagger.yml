@@ -1,0 +1,66 @@
+swagger: '2.0'
+info:
+  title: Monaco 2018 Racing Report API
+  description: API for generating reports of Monaco 2018 Racing
+  version: 1.0
+basePath: /api/v1/
+tags:
+  - name: Report
+    description: Operations related to the report
+  - name: Drivers
+    description: Operations related to the drivers
+
+paths:
+  /report/:
+    get:
+      tags:
+        - Report
+      summary: Get the report
+      parameters:
+        - name: format
+          in: query
+          description: The format of the report (json, xml)
+          required: false
+          type: string
+        - name: order
+          in: query
+          description: The order of the report (asc, desc)
+          required: false
+          type: string
+        - name: driver_id
+          in: query
+          description: The driver ID for the report
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid format
+
+  /report/drivers/:
+    get:
+      tags:
+        - Drivers
+      summary: Get the list of drivers
+      parameters:
+        - name: format
+          in: query
+          description: The format of the list (json, xml)
+          required: false
+          type: string
+        - name: order
+          in: query
+          description: The order of the list (asc, desc)
+          required: false
+          type: string
+        - name: driver_id
+          in: query
+          description: The driver ID for the report
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid format

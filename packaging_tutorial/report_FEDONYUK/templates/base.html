@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="header">
+    <h5>Новости из мира гонок формулы 1</h5>
+  </div>
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
+  <div class="footer">
+    <p>&nbsp;</p>
+    <p>&copy; Все права защищены. Fedonyuk Co.</p>
+    <p>Администрация сайта не несет ответственность за ваше здоровье.</p>
+  </div>
+</body>
+</html>

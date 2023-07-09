@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Report of Monaco 2018 Racing F1{% endblock %}
+
+{% block content %}
+<h1>Report of Monaco 2018 Racing F1</h1>
+<table>
+    <thead>
+    <tr>
+        <th>№/RACE</th>
+        <th>CODE DRIVER</th>
+        <th>NAME DRIVER</th>
+        <th>TEAM FORMULA 1</th>
+        <th>BEST LAP</th>
+    </tr>
+    </thead>
+    <!-- Loop through the race data and generate table rows -->
+    <tbody>
+    {% for row in report %}
+    <tr>
+        <td>{{ row[0] }}</td>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td>{{ row[3] }}</td>
+        <td>{{ row[4] }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
