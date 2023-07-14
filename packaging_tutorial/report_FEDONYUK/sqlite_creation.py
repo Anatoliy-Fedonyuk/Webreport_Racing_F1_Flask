@@ -1,6 +1,6 @@
 import os
 from datetime import datetime, timedelta
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field
 from flask_sqlalchemy import SQLAlchemy
 
 from packaging_tutorial.report_FEDONYUK.report_web import app
@@ -20,18 +20,18 @@ class Driver(BaseModel):
     driver_id: str = Field(..., pattern=r'^[A-Z]{3}$')
     name: str = Field(..., pattern=r'^[A-Z]{1}\w+\W[A-Z]{1}\w+$')
     team: str = Field(..., pattern=r'^[A-Z\W]+$')
-    best_lap: timedelta
+    best_lap: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class DriverModel(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     driver_id = db.Column(db.String(3), unique=True, nullable=False)
     name = db.Column(db.String(100), unique=True, nullable=False)
     team = db.Column(db.String(100), nullable=False)
-    best_lap = db.Column(db.Interval)
+    best_lap = db.Column(db.String(50))
 
     def __init__(self, driver: Driver):
         self.driver_id = driver.driver_id
@@ -60,34 +60,37 @@ def merged_laps() -> list[dict]:
         start_lap = read_log_file(START_LOG).get(driver_id)
         if start_lap and end_lap:
             best_lap = abs(datetime.fromisoformat(end_lap) - datetime.fromisoformat(start_lap))
-            driver = {'driver_id': driver_id, 'best_lap': best_lap}
+            driver = {'driver_id': driver_id, 'best_lap': format_timedelta(best_lap)}
             merged_laps.append(driver)
     return merged_laps
 
 
-def get_drivers(path: str) -> list[dict]:
-    abbreviations = get_abbreviation(path)
-    merged = merged_laps(path)
-    drivers_all = []
-    for abbrev in abbreviations:
-        for merged_data in merged:
-            if abbrev['driver_id'] == merged_data['driver_id']:
-                driver = {'driver_id': abbrev['driver_id'], 'name': abbrev['name'], 'team': abbrev['team'],
-                          'best_lap': merged_data['best_lap']}
+def get_drivers() -> list[Driver]:
+    """Function to create a class Driver from 3 files, comparing data by driver_id."""
+    drivers_all = []  # container list of class Driver
+    for abbrev in get_abbreviation():
+        for merged_lap in merged_laps():
+            if abbrev['driver_id'] == merged_lap['driver_id']:
+                driver = Driver(driver_id=abbrev['driver_id'], name=abbrev['name'],
+                                team=abbrev['team'], best_lap=merged_lap['best_lap'])
                 drivers_all.append(driver)
     return drivers_all
 
 
-def save_drivers(path: str):
-    db.create_all()
-    drivers = get_drivers(path)
-    for index, driver_data in enumerate(drivers, start=1):
-        driver = Driver(**driver_data)
-        driver_model = DriverModel(driver)
-        driver_model.id = index
-        db.session.add(driver_model)
-    db.session.commit()
+def format_timedelta(time_obj: timedelta) -> str:
+    """Function format the lap time from the format -timedelta-"""
+    return f"{time_obj.seconds // 60}:{time_obj.seconds % 60:02d}:{str(time_obj.microseconds)[:3]}"
+
+
+def model_creation():
+    with app.app_context():
+        db.create_all()
+        drivers = sorted(get_drivers(), key=lambda x: x.best_lap)
+        for driver in drivers:
+            driver_model = DriverModel(driver)
+            db.session.add(driver_model)
+        db.session.commit()
 
 
 if __name__ == '__main__':
-    save_drivers(BASE_DIR)
+    model_creation()
