@@ -73,6 +73,7 @@ def get_list_drivers(asc: bool, path: str = _BASE_DIR) -> list[list]:
     list_drivers = [[dr.name, dr.driver_id] for dr in sorted_drivers]
     if not asc:
         list_drivers.reverse()
+    print(list_drivers)
     return list_drivers
 
 
@@ -86,6 +87,7 @@ def build_report(asc: bool = True, driver: str = None, path: str = _BASE_DIR) ->
         table = [e for e in table if e[1] == driver.strip()]
     if not asc:
         table.reverse()
+    print(table)
     return table
 
 

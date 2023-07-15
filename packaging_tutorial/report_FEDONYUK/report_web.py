@@ -2,8 +2,9 @@
 from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
+from flask_sqlalchemy import SQLAlchemy
 
-from packaging_tutorial.report_FEDONYUK.report import build_report, get_list_drivers
+# from packaging_tutorial.report_FEDONYUK.report import build_report, get_list_drivers
 from packaging_tutorial.report_FEDONYUK.report_api import ReportResource, DriversResource
 
 app = Flask(__name__)
@@ -50,5 +51,4 @@ def show_drivers():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
-
+    app.run(debug=True)
