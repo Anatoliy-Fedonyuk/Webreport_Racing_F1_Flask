@@ -1,3 +1,4 @@
+"""This script that should parse and save data from files to a sqlite database"""
 import os
 from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
@@ -9,7 +10,7 @@ ABBREVIATION_TXT = "abbreviations.txt"
 START_LOG = "start.log"
 END_LOG = "end.log"
 _BASE_DIR = os.path.join(os.path.dirname(__file__), '../data/')
-DATABASE_FILE = os.path.join(_BASE_DIR, 'monaco_sqlite.db')
+DATABASE_FILE = os.path.join(_BASE_DIR, 'monaco.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_FILE
 db = SQLAlchemy(app)
@@ -27,17 +28,21 @@ class Driver(BaseModel):
 
 
 class DriverModel(db.Model):
+    """Class that creates a Model SQLAlchemy for our database"""
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     driver_id = db.Column(db.String(3), unique=True, nullable=False)
     name = db.Column(db.String(100), unique=True, nullable=False)
     team = db.Column(db.String(100), nullable=False)
-    best_lap = db.Column(db.String(50))
+    best_lap = db.Column(db.String(50), nullable=False)
 
     def __init__(self, driver: Driver):
         self.driver_id = driver.driver_id
         self.name = driver.name
         self.team = driver.team
         self.best_lap = driver.best_lap
+
+    def __repr__(self):
+        return f"{self.id=}, {self.driver_id=}, {self.name=}, {self.team=}, {self.best_lap=}\n"
 
 
 def get_abbreviation() -> list[dict]:
@@ -83,6 +88,7 @@ def format_timedelta(time_obj: timedelta) -> str:
 
 
 def model_creation():
+    """Function writes the data of the Driver of the model SQLite"""
     with app.app_context():
         db.create_all()
         drivers = sorted(get_drivers(), key=lambda x: x.best_lap)
@@ -94,3 +100,5 @@ def model_creation():
 
 if __name__ == '__main__':
     model_creation()
+    # with app.app_context():
+    #     print(DriverModel.query.all())
