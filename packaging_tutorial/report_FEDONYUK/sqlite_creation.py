@@ -1,10 +1,11 @@
 """This script that should parse and save data from files to a sqlite database"""
 import os
+from flask import Flask
 from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 from flask_sqlalchemy import SQLAlchemy
 
-from packaging_tutorial.report_FEDONYUK.report_web import app
+# from packaging_tutorial.report_FEDONYUK.report_web import app, db
 
 ABBREVIATION_TXT = "abbreviations.txt"
 START_LOG = "start.log"
@@ -12,7 +13,9 @@ END_LOG = "end.log"
 _BASE_DIR = os.path.join(os.path.dirname(__file__), '../data/')
 DATABASE_FILE = os.path.join(_BASE_DIR, 'monaco.db')
 
+app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_FILE
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
@@ -101,4 +104,7 @@ def model_creation():
 if __name__ == '__main__':
     model_creation()
     # with app.app_context():
-    #     print(DriverModel.query.all())
+    #     for row in DriverModel.query.all():
+    #         print(row)
+    #         res = [[driver] for driver in DriverModel.query.all()]
+    #         print(res)
