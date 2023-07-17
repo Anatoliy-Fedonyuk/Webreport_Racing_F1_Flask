@@ -5,8 +5,6 @@ from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 from flask_sqlalchemy import SQLAlchemy
 
-# from packaging_tutorial.report_FEDONYUK.report_web import app, db
-
 ABBREVIATION_TXT = "abbreviations.txt"
 START_LOG = "start.log"
 END_LOG = "end.log"
@@ -44,8 +42,8 @@ class DriverModel(db.Model):
         self.team = driver.team
         self.best_lap = driver.best_lap
 
-    def __repr__(self):
-        return f"{self.id=}, {self.driver_id=}, {self.name=}, {self.team=}, {self.best_lap=}\n"
+    # def __repr__(self):
+    #     return f"{self.id=}, {self.driver_id=}, {self.name=}, {self.team=}, {self.best_lap=}"
 
 
 def get_abbreviation() -> list[dict]:
@@ -104,7 +102,5 @@ def model_creation():
 if __name__ == '__main__':
     model_creation()
     # with app.app_context():
-    #     for row in DriverModel.query.all():
-    #         print(row)
-    #         res = [[driver] for driver in DriverModel.query.all()]
-    #         print(res)
+        # print(DriverModel.query.all())
+        # [print(driver) for driver in DriverModel.query.all()]

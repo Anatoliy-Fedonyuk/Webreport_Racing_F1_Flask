@@ -118,8 +118,8 @@ def format_timedelta(time_obj: timedelta) -> str:
 
 
 if __name__ == '__main__':
-    print_report()
+    # print_report()
     print_report(driver='KRF')
-    # print_report(False)
+    print_report(False)
     # print_list_drivers(False)
     print_list_drivers()

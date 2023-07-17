@@ -3,9 +3,8 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 
-# from packaging_tutorial.report_FEDONYUK.report import build_report, get_list_drivers
 from packaging_tutorial.report_FEDONYUK.sqlite_creation import db, DriverModel
 from packaging_tutorial.report_FEDONYUK.report_api import ReportResource, DriversResource
 
@@ -41,25 +40,28 @@ def show_report():
         return redirect('/report/drivers/' + '?driver_id=' + driver_id)
 
     drivers = DriverModel.query.all()
-    report = [[driver.id, driver.driver_id, driver.name, driver.team, driver.best_lap] for driver in drivers]
-    print(report)
-    # report = build_report(asc=asc)  # We send the generated data to display the table in report.html
+    report = [[dr.id, dr.driver_id, dr.name, dr.team, dr.best_lap] for dr in drivers]
+    if not asc:
+        report.reverse()
     return render_template('report.html', report=report)
 
 
-# @app.route('/report/drivers/')
-# def show_drivers():
-#     """The function processes end-point '/report/drivers/' with query-parameters order and driver_id."""
-#     order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'
-#     asc = (order != 'desc')  # If order is not equal to 'desc' then asc=True, otherwise asc=False
-#
-#     if 'driver_id' in request.args:  # Getting and processing query parameter 'driver_id'
-#         driver_id = request.args['driver_id']
-#         report = build_report(driver=driver_id)
-#         return render_template('report.html', report=report)
-#
-#     drivers = get_list_drivers(asc=asc)  # We send the generated data to display the table in drivers.html
-#     return render_template('drivers.html', drivers=drivers)
+@app.route('/report/drivers/')
+def show_drivers():
+    """The function processes end-point '/report/drivers/' with query-parameters order and driver_id."""
+    order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'
+    asc = (order != 'desc')  # If order is not equal to 'desc' then asc=True, otherwise asc=False
+
+    if 'driver_id' in request.args:  # Getting and processing query parameter 'driver_id'
+        driver_id = request.args['driver_id']
+
+        report = [DriverModel.query.filter_by(driver_id=driver_id).all()]
+        print(report)
+        # report = build_report(driver=driver_id)
+        return render_template('report.html', report=report)
+
+    # drivers = get_list_drivers(asc=asc)  # We send the generated data to display the table in drivers.html
+    # return render_template('drivers.html', drivers=drivers)
 
 
 if __name__ == '__main__':
