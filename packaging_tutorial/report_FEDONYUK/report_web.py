@@ -3,7 +3,6 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
-# from flask_sqlalchemy import SQLAlchemy
 
 from packaging_tutorial.report_FEDONYUK.sqlite_creation import db, DriverModel
 from packaging_tutorial.report_FEDONYUK.report_api import ReportResource, DriversResource
@@ -14,8 +13,8 @@ DATABASE_FILE = os.path.join(_BASE_DIR, 'monaco.db')
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_FILE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# db = SQLAlchemy(app)
 db.init_app(app)
+
 api = Api(app, prefix='/api/v1/')
 swagger = Swagger(app, template_file='Swagger/swagger.yml')
 
@@ -39,10 +38,9 @@ def show_report():
         driver_id = request.args['driver_id']
         return redirect('/report/drivers/' + '?driver_id=' + driver_id)
 
-    drivers = DriverModel.query.all()
-    report = [[dr.id, dr.driver_id, dr.name, dr.team, dr.best_lap] for dr in drivers]
-    if not asc:
-        report.reverse()
+    report = [driver.to_list() for driver in DriverModel.query.all()]
+    # report = [[d.id, d.driver_id, d.name, d.team, d.best_lap] for d in DriverModel.query.all()]
+    if not asc: report.reverse()
     return render_template('report.html', report=report)
 
 
@@ -54,14 +52,13 @@ def show_drivers():
 
     if 'driver_id' in request.args:  # Getting and processing query parameter 'driver_id'
         driver_id = request.args['driver_id']
-
-        report = [DriverModel.query.filter_by(driver_id=driver_id).all()]
-        print(report)
-        # report = build_report(driver=driver_id)
+        report = [(DriverModel.query.filter_by(driver_id=driver_id).first()).to_list()]
         return render_template('report.html', report=report)
 
-    # drivers = get_list_drivers(asc=asc)  # We send the generated data to display the table in drivers.html
-    # return render_template('drivers.html', drivers=drivers)
+    sort_model = sorted(DriverModel.query.all(), key=lambda x: x.name)
+    drivers = [[dr.name, dr.driver_id] for dr in sort_model]
+    if not asc: drivers.reverse()
+    return render_template('drivers.html', drivers=drivers)
 
 
 if __name__ == '__main__':

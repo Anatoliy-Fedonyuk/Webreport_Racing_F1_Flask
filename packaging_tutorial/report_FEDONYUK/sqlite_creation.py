@@ -42,8 +42,11 @@ class DriverModel(db.Model):
         self.team = driver.team
         self.best_lap = driver.best_lap
 
-    # def __repr__(self):
-    #     return f"{self.id=}, {self.driver_id=}, {self.name=}, {self.team=}, {self.best_lap=}"
+    def __repr__(self):
+        return f"{self.id}, {self.driver_id}, {self.name}, {self.team}, {self.best_lap}"
+
+    def to_list(self) -> list:
+        return [self.id, self.driver_id, self.name, self.team, self.best_lap]
 
 
 def get_abbreviation() -> list[dict]:
@@ -102,5 +105,5 @@ def model_creation():
 if __name__ == '__main__':
     model_creation()
     # with app.app_context():
-        # print(DriverModel.query.all())
-        # [print(driver) for driver in DriverModel.query.all()]
+    # print(DriverModel.query.all())
+    # [print(driver) for driver in DriverModel.query.all()]
