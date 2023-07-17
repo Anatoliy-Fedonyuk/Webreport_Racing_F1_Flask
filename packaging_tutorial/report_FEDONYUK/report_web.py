@@ -3,20 +3,24 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 
 # from packaging_tutorial.report_FEDONYUK.report import build_report, get_list_drivers
+from packaging_tutorial.report_FEDONYUK.sqlite_creation import db, DriverModel
 from packaging_tutorial.report_FEDONYUK.report_api import ReportResource, DriversResource
 
 _BASE_DIR = os.path.join(os.path.dirname(__file__), '../data/')
 DATABASE_FILE = os.path.join(_BASE_DIR, 'monaco.db')
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///путь_к_базе_данных.sqlite'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 api = Api(app, prefix='/api/v1/')
 swagger = Swagger(app, template_file='Swagger/swagger.yml')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_FILE
-db = SQLAlchemy(app)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_FILE
+# db = SQLAlchemy(app)
 
 api.add_resource(ReportResource, 'report/')
 api.add_resource(DriversResource, 'report/drivers/')
@@ -62,4 +66,5 @@ def show_drivers():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+
+    app.run(debug=True)
