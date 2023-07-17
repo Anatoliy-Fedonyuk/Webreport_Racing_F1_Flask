@@ -38,10 +38,7 @@ def show_report():
         driver_id = request.args['driver_id']
         return redirect('/report/drivers/' + '?driver_id=' + driver_id)
 
-    report = [driver.to_list() for driver in DriverModel.query.all()]
-    # report = [[d.id, d.driver_id, d.name, d.team, d.best_lap] for d in DriverModel.query.all()]
-    if not asc: report.reverse()
-    return render_template('report.html', report=report)
+    return render_template('report.html', report=get_report(asc))
 
 
 @app.route('/report/drivers/')
@@ -52,13 +49,26 @@ def show_drivers():
 
     if 'driver_id' in request.args:  # Getting and processing query parameter 'driver_id'
         driver_id = request.args['driver_id']
-        report = [(DriverModel.query.filter_by(driver_id=driver_id).first()).to_list()]
-        return render_template('report.html', report=report)
+        return render_template('report.html', report=get_report(driver=driver_id))
 
+    return render_template('drivers.html', drivers=get_drivers(asc))
+
+
+def get_report(asc: bool = True, driver: str = None) -> list[list]:
+    """Building an overall or separate report on the Monaco race F1 2018 from monaco.db"""
+    report = [driver.to_list() for driver in DriverModel.query.all()]
+    if driver:
+        report = [(DriverModel.query.filter_by(driver_id=driver).first()).to_list()]
+    if not asc: report.reverse()
+    return report
+
+
+def get_drivers(asc: bool = True) -> list[list]:
+    """Building a list of drivers on the Monaco race F1 2018 from monaco.db"""
     sort_model = sorted(DriverModel.query.all(), key=lambda x: x.name)
     drivers = [[dr.name, dr.driver_id] for dr in sort_model]
     if not asc: drivers.reverse()
-    return render_template('drivers.html', drivers=drivers)
+    return drivers
 
 
 if __name__ == '__main__':

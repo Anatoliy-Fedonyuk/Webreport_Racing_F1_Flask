@@ -3,7 +3,7 @@ from flask import request, make_response
 from flask_restful import Resource
 from dicttoxml import dicttoxml
 
-from packaging_tutorial.report_FEDONYUK.report import build_report, get_list_drivers
+from packaging_tutorial.report_FEDONYUK.report_web import get_report, get_drivers
 
 
 def generate_response(report, report_format):
@@ -24,7 +24,7 @@ class ReportResource(Resource):
         report_format = request.args.get('format', 'json')
         order = request.args.get('order', 'asc')
         driver_id = request.args.get('driver_id', None)
-        report = build_report(asc=(order != 'desc'), driver=driver_id)
+        report = get_report(asc=(order != 'desc'), driver=driver_id)
 
         return generate_response(report, report_format)
 
@@ -33,9 +33,9 @@ class DriversResource(Resource):
     def get(self):
         report_format = request.args.get('format', 'json')
         order = request.args.get('order', 'asc')
-        drivers_list = get_list_drivers(asc=(order != 'desc'))
+        drivers_list = get_drivers(asc=(order != 'desc'))
         driver_id = request.args.get('driver_id', None)
         if 'driver_id' in request.args:
-            drivers_list = build_report(driver=driver_id)
+            drivers_list = get_report(driver=driver_id)
 
         return generate_response(drivers_list, report_format)
