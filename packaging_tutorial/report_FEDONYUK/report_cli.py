@@ -17,8 +17,8 @@ def main_cli(file: str, asc: bool, desc: bool, driver: str = None) -> None:
         raise click.UsageError("--Options --asc,--desc,--driver cannot be used together!--")
     elif driver:
         if driver in (dr.name for dr in report.get_drivers(file)):
-            driver_id = [dr.driver_id for dr in report.get_drivers(file) if dr.name==driver]
-            report.print_report(True, driver_id[0], file)  # Call a function to get a separate report.
+            driver_id = [dr.driver_id for dr in report.get_drivers(file) if dr.name==driver][0]
+            report.print_report(True, driver_id, file)  # Call a function to get a separate report.
         else:
             raise click.UsageError("--Please enter a valid driver name!--")
     else:
