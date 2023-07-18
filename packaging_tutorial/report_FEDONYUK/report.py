@@ -83,18 +83,18 @@ def build_report(asc: bool = True, driver: str = None, path: str = _BASE_DIR) ->
     for i, dr in enumerate(sorted_drivers, start=1):
         table.append([i, dr.driver_id, dr.name, dr.team, format_timedelta(dr.best_lap)])
     if driver:
-        table = [e for e in table if e[1] == driver.strip()]
+        table = [e for e in table if e[1] == driver]
     if not asc:
         table.reverse()
     return table
 
 
-def print_report(asc: bool = True, driver: str = None) -> None:
+def print_report(asc: bool = True, driver: str = None, path: str = _BASE_DIR) -> None:
     """this function Prints general or specific driver report"""
     number_separate = SEPARATOR_FOR_REPORT
     if not asc:
         number_separate = SEPARATOR_REPORT_DESC
-    table_sep = tabulate(build_report(asc, driver), HEADERS, tablefmt="rounded_outline")
+    table_sep = tabulate(build_report(asc, driver, path), HEADERS, tablefmt="rounded_outline")
     print("    -----------   Report of Monaco 2018 Racing F1   -----------")
     return print(insert_separator(table_sep, number_separate))
 
