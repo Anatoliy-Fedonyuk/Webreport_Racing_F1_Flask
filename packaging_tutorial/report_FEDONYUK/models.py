@@ -1,6 +1,5 @@
-"""This script that should parse and save data from files to a sqlite database"""
+"""This script that should parse and save data from files to a model in sqlite database"""
 import os
-from flask import Flask
 from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 from flask_sqlalchemy import SQLAlchemy
@@ -9,12 +8,8 @@ ABBREVIATION_TXT = "abbreviations.txt"
 START_LOG = "start.log"
 END_LOG = "end.log"
 _BASE_DIR = os.path.join(os.path.dirname(__file__), '../data/')
-DATABASE_FILE = os.path.join(_BASE_DIR, 'monaco.db')
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_FILE
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 
 class Driver(BaseModel):
@@ -44,9 +39,6 @@ class DriverModel(db.Model):
 
     def __repr__(self):
         return f"{self.id}, {self.driver_id}, {self.name}, {self.team}, {self.best_lap}"
-
-    def to_list(self) -> list:
-        return [self.id, self.driver_id, self.name, self.team, self.best_lap]
 
 
 def get_abbreviation() -> list[dict]:
@@ -93,13 +85,13 @@ def format_timedelta(time_obj: timedelta) -> str:
 
 def model_creation():
     """Function writes the data of the Driver of the model SQLite"""
-    with app.app_context():
-        db.create_all()
-        drivers = sorted(get_drivers(), key=lambda x: x.best_lap)
-        for driver in drivers:
-            driver_model = DriverModel(driver)
-            db.session.add(driver_model)
-        db.session.commit()
+    # with app.app_context():
+    db.create_all()
+    drivers = sorted(get_drivers(), key=lambda x: x.best_lap)
+    for driver in drivers:
+        driver_model = DriverModel(driver)
+        db.session.add(driver_model)
+    db.session.commit()
 
 
 if __name__ == '__main__':
