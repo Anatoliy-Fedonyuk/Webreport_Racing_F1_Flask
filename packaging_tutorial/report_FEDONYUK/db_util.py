@@ -1,7 +1,7 @@
 from flask import current_app
 from sqlalchemy.orm import sessionmaker
 
-from packaging_tutorial.report_FEDONYUK.sqlite_creation import db, DriverModel
+from packaging_tutorial.report_FEDONYUK.models import db, DriverModel
 
 Session = sessionmaker()
 

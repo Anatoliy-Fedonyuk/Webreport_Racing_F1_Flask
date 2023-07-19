@@ -4,8 +4,8 @@ from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
 
-from packaging_tutorial.report_FEDONYUK.sqlite_creation import db
-from packaging_tutorial.report_FEDONYUK.utils import get_report, get_drivers
+from packaging_tutorial.report_FEDONYUK.models import db
+from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
 from packaging_tutorial.report_FEDONYUK.report_api import ReportResource, DriversResource
 
 _BASE_DIR = os.path.join(os.path.dirname(__file__), '../data/')

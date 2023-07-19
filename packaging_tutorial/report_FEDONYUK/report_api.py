@@ -3,7 +3,7 @@ from flask import request, make_response
 from flask_restful import Resource
 from dicttoxml import dicttoxml
 
-from packaging_tutorial.report_FEDONYUK.utils import get_report, get_drivers
+from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
 
 
 def generate_response(report, report_format):
