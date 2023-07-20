@@ -23,4 +23,3 @@ def get_drivers(asc: bool = True) -> list[list]:
         drivers.reverse()
 
     return drivers
-
