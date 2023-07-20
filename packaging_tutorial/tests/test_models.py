@@ -31,10 +31,11 @@ class TestModels(unittest.TestCase):
             db.session.rollback()
 
     def test_get_abbreviation(self):
-        abbreviations = get_abbreviation()
-        self.assertIsInstance(abbreviations, list)
+        abbrev = get_abbreviation()
+        self.assertIsInstance(abbrev, list)
         self.assertTrue(all(
-            isinstance(abb, dict) and 'driver_id' in abb and 'name' in abb and 'team' in abb for abb in abbreviations))
+            isinstance(abb, dict) and 'driver_id' in abb and 'name' in abb and 'team' in abb for abb in abbrev))
+        self.assertTrue(len(abbrev) == 19)
 
     def test_read_log_file(self):
         log_data = read_log_file('start.log')
@@ -51,6 +52,7 @@ class TestModels(unittest.TestCase):
         drivers = get_drivers()
         self.assertIsInstance(drivers, list)
         self.assertTrue(all(isinstance(driver, Driver) for driver in drivers))
+        self.assertGreater(len(drivers), 15)
 
     def test_format_timedelta(self):
         time_obj = timedelta(minutes=1, seconds=45, microseconds=500000)
@@ -62,7 +64,8 @@ class TestModels(unittest.TestCase):
         with self.app.app_context():
             model_creation()
             drivers_count = DriverModel.query.count()
-            self.assertGreater(drivers_count, 0)
+            self.assertEqual(drivers_count, 19)
+            print(DriverModel.query.all())
 
     def test_model_unique_constraints(self):
         # Test uniqueness constraint for driver_id and name
@@ -71,10 +74,10 @@ class TestModels(unittest.TestCase):
         with self.app.app_context():
             driver_model1 = DriverModel(driver1)
             driver_model2 = DriverModel(driver2)
-            self.db_session.add(driver_model1)
+            db.session.add(driver_model1)
             with self.assertRaises(Exception) as context:
-                self.db_session.add(driver_model2)
-                self.db_session.commit()
+                db.session.add(driver_model2)
+                db.session.commit()
             self.assertTrue('UNIQUE constraint failed' in str(context.exception))
 
 
