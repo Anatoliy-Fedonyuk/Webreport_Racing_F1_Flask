@@ -85,7 +85,6 @@ def format_timedelta(time_obj: timedelta) -> str:
 
 def model_creation():
     """Function writes the data of the Driver of the model SQLite"""
-    # with app.app_context():
     db.create_all()
     drivers = sorted(get_drivers_all(), key=lambda x: x.best_lap)
     for driver in drivers:
