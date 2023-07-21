@@ -29,6 +29,7 @@ class TestModels(unittest.TestCase):
         db.init_app(cls.app)
         with cls.app.app_context():
             db.create_all()
+            model_creation()
 
     def setUp(self):
         with self.app.app_context():
@@ -67,15 +68,33 @@ class TestModels(unittest.TestCase):
         formatted_time = format_timedelta(time_obj)
         self.assertEqual(formatted_time, "1:45:500")
 
+    def test_get_report(self):
+        """Testing function get_report from module db_utils"""
+        with self.app.app_context():
+            one_driver = get_report(driver='KRF')
+            print(one_driver)
+            self.assertIsInstance(one_driver, list)
+            self.assertEqual(one_driver, [ONE_DRIVER])
+            self.assertEqual(len(one_driver), 1)
+
+    def test_get_drivers(self):
+        """Testing function get_report from module db_utils"""
+        with self.app.app_context():
+            drivers_list = get_drivers(False)
+            print(drivers_list)
+            self.assertIsInstance(drivers_list, list)
+            self.assertEqual(drivers_list, EXPECTED_LIST)
+            self.assertEqual(len(drivers_list), 19)
+
     def test_model_creation(self):
         """Testing if the data is saved correctly in the database"""
         with self.app.app_context():
-            model_creation()
+            # model_creation()
             drivers_count = DriverModel.query.count()
             self.assertEqual(drivers_count, 19)
 
     def test_single_driver_saved_correctly(self):
-        driver_list = ONE_DRIVER
+        driver_list = [1, "SVF", "Sebastian Vettel", "FERRARI", "1:04:415"]
         with self.app.app_context():
             saved_driver = DriverModel.query.filter_by(driver_id=driver_list[1]).first()
             self.assertIsNotNone(saved_driver)
@@ -97,14 +116,6 @@ class TestModels(unittest.TestCase):
                 db.session.add(driver_model2)
                 db.session.commit()
             self.assertTrue('UNIQUE constraint failed' in str(context.exception))
-
-    def test_get_report(self):
-        with self.app.app_context():
-            one_driver = get_report(driver='KRF')
-            print(one_driver)
-            self.assertIsInstance(one_driver, list)
-            # self.assertEqual(one_driver, [ONE_DRIVER])
-            # self.assertEqual(len(one_driver), 1)
 
 
 if __name__ == '__main__':
