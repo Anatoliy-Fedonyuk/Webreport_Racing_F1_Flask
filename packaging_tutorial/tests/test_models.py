@@ -1,19 +1,17 @@
+"""--UnitTest for models.py module to create sqlite database model--"""
 import unittest
-import os
-from datetime import datetime, timedelta
+from datetime import timedelta
 from flask import Flask
 
 from packaging_tutorial.report_FEDONYUK.models import db, Driver, DriverModel, model_creation, get_abbreviation, \
     read_log_file, merged_laps, get_drivers, format_timedelta
-
-_BASE_DIR = os.path.join(os.path.dirname(__file__), '../data/')
 
 
 class TestModels(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        # Configure your database URI here. For testing purposes, you can use SQLite in memory.
+        """For testing purposes, we create SQLite database in memory."""
         cls.db_uri = 'sqlite:///:memory:'
         cls.app = Flask(__name__)
         cls.app.config['SQLALCHEMY_DATABASE_URI'] = cls.db_uri
@@ -60,15 +58,26 @@ class TestModels(unittest.TestCase):
         self.assertEqual(formatted_time, "1:45:500")
 
     def test_model_creation(self):
-        # Testing if the data is saved correctly in the database
+        """Testing if the data is saved correctly in the database"""
         with self.app.app_context():
             model_creation()
             drivers_count = DriverModel.query.count()
             self.assertEqual(drivers_count, 19)
-            print(DriverModel.query.all())
+
+    def test_single_driver_saved_correctly(self):
+        driver_list = [4, "KRF", "Kimi Räikkönen", "FERRARI", "1:12:639"]
+        with self.app.app_context():
+            saved_driver = DriverModel.query.filter_by(driver_id=driver_list[1]).first()
+            # print(saved_driver)
+            self.assertIsNotNone(saved_driver)
+            self.assertEqual(saved_driver.id, driver_list[0])
+            self.assertEqual(saved_driver.driver_id, driver_list[1])
+            self.assertEqual(saved_driver.name, driver_list[2])
+            self.assertEqual(saved_driver.team, driver_list[3])
+            self.assertEqual(saved_driver.best_lap, driver_list[4])
 
     def test_model_unique_constraints(self):
-        # Test uniqueness constraint for driver_id and name
+        """Test uniqueness constraint for driver_id and name"""
         driver1 = Driver(driver_id="ABC", name="John Doe", team="TEAM A", best_lap="1:30:123")
         driver2 = Driver(driver_id="ABC", name="John Doe", team="TEAM B", best_lap="1:28:456")
         with self.app.app_context():
