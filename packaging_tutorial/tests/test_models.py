@@ -4,7 +4,17 @@ from datetime import timedelta
 from flask import Flask
 
 from packaging_tutorial.report_FEDONYUK.models import db, Driver, DriverModel, model_creation, get_abbreviation, \
-    read_log_file, merged_laps, get_drivers, format_timedelta
+    read_log_file, merged_laps, get_drivers_all, format_timedelta
+from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
+
+ONE_DRIVER = [4, "KRF", "Kimi Räikkönen", "FERRARI", "1:12:639"]
+EXPECTED_LIST = [['Valtteri Bottas', 'VBM'], ['Stoffel Vandoorne', 'SVM'], ['Sergio Perez', 'SPF'],
+                 ['Sergey Sirotkin', 'SSW'], ['Sebastian Vettel', 'SVF'], ['Romain Grosjean', 'RGH'],
+                 ['Pierre Gasly', 'PGS'], ['Nico Hulkenberg', 'NHR'], ['Marcus Ericsson', 'MES'],
+                 ['Lewis Hamilton', 'LHM'], ['Lance Stroll', 'LSW'], ['Kimi Räikkönen', 'KRF'],
+                 ['Kevin Magnussen', 'KMH'], ['Fernando Alonso', 'FAM'], ['Esteban Ocon', 'EOF'],
+                 ['Daniel Ricciardo', 'DRR'], ['Charles Leclerc', 'CLS'], ['Carlos Sainz', 'CSR'],
+                 ['Brendon Hartley', 'BHS']]
 
 
 class TestModels(unittest.TestCase):
@@ -46,8 +56,8 @@ class TestModels(unittest.TestCase):
         self.assertIsInstance(laps, list)
         self.assertTrue(all(isinstance(lap, dict) and 'driver_id' in lap and 'best_lap' in lap for lap in laps))
 
-    def test_get_drivers(self):
-        drivers = get_drivers()
+    def test_get_drivers_all(self):
+        drivers = get_drivers_all()
         self.assertIsInstance(drivers, list)
         self.assertTrue(all(isinstance(driver, Driver) for driver in drivers))
         self.assertGreater(len(drivers), 15)
@@ -65,10 +75,9 @@ class TestModels(unittest.TestCase):
             self.assertEqual(drivers_count, 19)
 
     def test_single_driver_saved_correctly(self):
-        driver_list = [4, "KRF", "Kimi Räikkönen", "FERRARI", "1:12:639"]
+        driver_list = ONE_DRIVER
         with self.app.app_context():
             saved_driver = DriverModel.query.filter_by(driver_id=driver_list[1]).first()
-            # print(saved_driver)
             self.assertIsNotNone(saved_driver)
             self.assertEqual(saved_driver.id, driver_list[0])
             self.assertEqual(saved_driver.driver_id, driver_list[1])
@@ -88,6 +97,14 @@ class TestModels(unittest.TestCase):
                 db.session.add(driver_model2)
                 db.session.commit()
             self.assertTrue('UNIQUE constraint failed' in str(context.exception))
+
+    def test_get_report(self):
+        with self.app.app_context():
+            one_driver = get_report(driver='KRF')
+            print(one_driver)
+            self.assertIsInstance(one_driver, list)
+            # self.assertEqual(one_driver, [ONE_DRIVER])
+            # self.assertEqual(len(one_driver), 1)
 
 
 if __name__ == '__main__':

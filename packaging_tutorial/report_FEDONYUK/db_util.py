@@ -1,3 +1,4 @@
+"""---This module provides utilities for working with the database---"""
 from packaging_tutorial.report_FEDONYUK.models import db, DriverModel
 
 
@@ -23,3 +24,8 @@ def get_drivers(asc: bool = True) -> list[list]:
         drivers.reverse()
 
     return drivers
+
+if __name__ == '__main__':
+    from packaging_tutorial.report_FEDONYUK.report_web import app
+    with app.app_context():
+        print(get_report(driver='KRF'))

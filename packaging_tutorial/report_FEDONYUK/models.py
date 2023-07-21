@@ -66,7 +66,7 @@ def merged_laps() -> list[dict]:
     return merged_laps
 
 
-def get_drivers() -> list[Driver]:
+def get_drivers_all() -> list[Driver]:
     """Function to create a class Driver from 3 files, comparing data by driver_id."""
     drivers_all = []  # container list of class Driver
     for abbrev in get_abbreviation():
@@ -87,7 +87,7 @@ def model_creation():
     """Function writes the data of the Driver of the model SQLite"""
     # with app.app_context():
     db.create_all()
-    drivers = sorted(get_drivers(), key=lambda x: x.best_lap)
+    drivers = sorted(get_drivers_all(), key=lambda x: x.best_lap)
     for driver in drivers:
         driver_model = DriverModel(driver)
         db.session.add(driver_model)
