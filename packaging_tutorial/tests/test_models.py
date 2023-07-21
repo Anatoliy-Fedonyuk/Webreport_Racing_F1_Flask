@@ -1,4 +1,4 @@
-"""--UnitTest for models.py module to create sqlite database model--"""
+"""--UnitTest for models.py and db_util.py modules for creating and working with a database model--"""
 import unittest
 from datetime import timedelta
 from flask import Flask
@@ -78,7 +78,7 @@ class TestModels(unittest.TestCase):
             self.assertEqual(len(one_driver), 1)
 
     def test_get_drivers(self):
-        """Testing function get_report from module db_utils"""
+        """Testing function get_drivers from module db_utils"""
         with self.app.app_context():
             drivers_list = get_drivers(False)
             print(drivers_list)

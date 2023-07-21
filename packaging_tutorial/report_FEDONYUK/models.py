@@ -92,10 +92,3 @@ def model_creation():
         driver_model = DriverModel(driver)
         db.session.add(driver_model)
     db.session.commit()
-
-
-# if __name__ == '__main__':
-#     model_creation()
-    # with app.app_context():
-    # print(DriverModel.query.all())
-    # [print(driver) for driver in DriverModel.query.all()]

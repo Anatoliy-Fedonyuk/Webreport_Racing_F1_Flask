@@ -3,10 +3,10 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Monaco 2018 Racing Report API"
+name = "Convert and store data to the database"
 version = "1.0.0"
 authors = [{ name = "Fedonyuk Anatoliy", email = "dekorstyle0@gmail.com" }, ]
-description = """API for generating reports of Monaco 2018 Racing. Report-based web-report using flask """
+description = """This version of our application, converting and storing the data to the data base."""
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = ["Programming Language :: Python :: 3",

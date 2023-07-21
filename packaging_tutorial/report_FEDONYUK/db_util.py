@@ -25,8 +25,3 @@ def get_drivers(asc: bool = True) -> list[list]:
 
     return drivers
 
-
-# if __name__ == '__main__':
-    # from packaging_tutorial.report_FEDONYUK.report_web import app
-    # with app.app_context():
-    #     print(get_report(driver='KRF'))
