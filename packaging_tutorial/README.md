@@ -1,12 +1,20 @@
-# This Project : REST API report of Monaco 2018 Racing
+# This Project : Convert and store data to the database 
 
-## Package "REST API report of Monaco 2018 Racing" - this software package is an open source product and is distributed free of charge)
+## Package "Convert and store data to the database" - this software package is an open source product
+## and is distributed free of charge)
 
 
-### This application is built with Restful API technology and fully wraps the API for our Report Monaco Racing 2018 web application.
-### Added the ability for the user to receive a server response in two formats of the most common files in the Internet industry to choose from: these are json and xml .
-### Keeping the full functionality of the Web Report, our application has a full-fledged module for testing API functions using UnitTest.
-### And a full version swagger web documentation for users! Where they can test all the paths and options of our application parameters and see the correct server feedback there!
+### Our project is developing and based on the same Report Monaco Racing 2018 Flask web application with
+### a full-fledged Restful API technology. This project received new functionality through the use of modern SQLite3
+### databases and ORM technologies, namely the flask_sqlalchemy applications, were used to work with them. And in testing
+### the new features of the application for working with the database, the test SQLite3 was used, but created only
+### in the device's memory. This application is built with Restful API technology and fully wraps the API for our Report
+### Monaco Racing 2018 web application. Added the ability for the user to receive a server response in two formats of
+### the most common files in the Internet industry to choose from: these are json and xml .
+### Keeping the full functionality of the Web Report, our application has a full-fledged module for testing API
+### functions using UnitTest. And a full version swagger web documentation for users! Where they can test all 
+### the paths and options of our application parameters and see the correct server feedback there!
+###
 
 
 

@@ -18,10 +18,10 @@ EXPECTED_LIST = [['Valtteri Bottas', 'VBM'], ['Stoffel Vandoorne', 'SVM'], ['Ser
 
 
 class TestModels(unittest.TestCase):
+    """For testing purposes, we create SQLite database in memory."""
 
     @classmethod
     def setUpClass(cls):
-        """For testing purposes, we create SQLite database in memory."""
         cls.db_uri = 'sqlite:///:memory:'
         cls.app = Flask(__name__)
         cls.app.config['SQLALCHEMY_DATABASE_URI'] = cls.db_uri
@@ -38,6 +38,12 @@ class TestModels(unittest.TestCase):
     def tearDown(self):
         with self.app.app_context():
             db.session.rollback()
+
+    @classmethod
+    def tearDownClass(cls):
+        with cls.app.app_context():
+            db.drop_all()
+            db.session.remove()
 
     def test_get_abbreviation(self):
         abbrev = get_abbreviation()
@@ -72,7 +78,6 @@ class TestModels(unittest.TestCase):
         """Testing function get_report from module db_utils"""
         with self.app.app_context():
             one_driver = get_report(driver='KRF')
-            print(one_driver)
             self.assertIsInstance(one_driver, list)
             self.assertEqual(one_driver, [ONE_DRIVER])
             self.assertEqual(len(one_driver), 1)
@@ -81,7 +86,6 @@ class TestModels(unittest.TestCase):
         """Testing function get_drivers from module db_utils"""
         with self.app.app_context():
             drivers_list = get_drivers(False)
-            print(drivers_list)
             self.assertIsInstance(drivers_list, list)
             self.assertEqual(drivers_list, EXPECTED_LIST)
             self.assertEqual(len(drivers_list), 19)
@@ -89,7 +93,6 @@ class TestModels(unittest.TestCase):
     def test_model_creation(self):
         """Testing if the data is saved correctly in the database"""
         with self.app.app_context():
-            # model_creation()
             drivers_count = DriverModel.query.count()
             self.assertEqual(drivers_count, 19)
 

@@ -14,5 +14,5 @@ classifiers = ["Programming Language :: Python :: 3",
     "Operating System :: OS Independent",]
 
 [project.urls]
-"Homepage" = "https://git.foxminded.ua/foxstudent105007/task-8-rest-api-report-of-monaco-2018-racing"
-"Bug Tracker" = "https://git.foxminded.ua/foxstudent105007/task-8-rest-api-report-of-monaco-2018-racing/-/issues"
+"Homepage" = "https://git.foxminded.ua/foxstudent105007/task-9-convert-and-store-data-to-the-database"
+"Bug Tracker" = "https://git.foxminded.ua/foxstudent105007/task-9-convert-and-store-data-to-the-database/-/issues"
