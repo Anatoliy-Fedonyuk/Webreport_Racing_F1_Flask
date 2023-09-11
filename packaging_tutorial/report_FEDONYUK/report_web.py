@@ -3,7 +3,6 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
-from flask_migrate import Migrate # Миграции - разобраться!
 
 from packaging_tutorial.report_FEDONYUK.models import db
 from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
@@ -16,7 +15,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_FILE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
-migrate = Migrate(app, db) # Миграции - разобраться!
 
 api = Api(app, prefix='/api/v1/')
 swagger = Swagger(app, template_file='Swagger/swagger.yml')

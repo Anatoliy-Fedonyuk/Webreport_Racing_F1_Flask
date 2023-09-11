@@ -1,7 +1,6 @@
 """This module is creation --Report of Monaco 2018 Racing F1"""
 import os
 from datetime import datetime, timedelta
-
 from pydantic import BaseModel, Field, model_validator
 from tabulate import tabulate
 
