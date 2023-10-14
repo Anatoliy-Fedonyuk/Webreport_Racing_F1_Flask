@@ -1,5 +1,6 @@
+"""This module create CLI for application"""
 import click
-import report
+from packaging_tutorial.report_FEDONYUK.report import get_drivers, print_report
 
 
 @click.command()
@@ -16,15 +17,15 @@ def main_cli(file: str, asc: bool, desc: bool, driver: str = None) -> None:
     elif (asc and desc) or (asc and driver) or (driver and desc):
         raise click.UsageError("--Options --asc,--desc,--driver cannot be used together!--")
     elif driver:
-        if driver in (dr.name for dr in report.get_drivers(file)):
-            driver_id = [dr.driver_id for dr in report.get_drivers(file) if dr.name==driver][0]
-            report.print_report(True, driver_id, file)  # Call a function to get a separate report.
+        if driver in (dr.name for dr in get_drivers(file)):
+            driver_id = [dr.driver_id for dr in get_drivers(file) if dr.name==driver][0]
+            print_report(True, driver_id, file)  # Call a function to get a separate report.
         else:
             raise click.UsageError("--Please enter a valid driver name!--")
     else:
         if not asc and not desc:
             asc = True  # Default to ascending order if neither --asc nor --desc is provided.
-        report.print_report(asc, None, file)  # Call a function to get the overall report.
+        print_report(asc, None, file)  # Call a function to get the overall report.
 
 
 if __name__ == '__main__':
