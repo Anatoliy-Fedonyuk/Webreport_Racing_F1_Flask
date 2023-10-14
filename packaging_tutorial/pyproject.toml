@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Convert and store data to the database"
+name = "Webreport Racing Monaco F1 Flask"
 version = "1.0.0"
 authors = [{ name = "Fedonyuk Anatoliy", email = "dekorstyle0@gmail.com" }, ]
 description = """This version of our application, converting and storing the data to the data base."""
@@ -14,5 +14,5 @@ classifiers = ["Programming Language :: Python :: 3",
     "Operating System :: OS Independent",]
 
 [project.urls]
-"Homepage" = "https://git.foxminded.ua/foxstudent105007/task-9-convert-and-store-data-to-the-database"
-"Bug Tracker" = "https://git.foxminded.ua/foxstudent105007/task-9-convert-and-store-data-to-the-database/-/issues"
+"Homepage" = "https://github.com/Anatoliy-Fedonyuk/Webreport_Racing_F1_Flask"
+"Bug Tracker" = "https://github.com/Anatoliy-Fedonyuk/Webreport_Racing_F1_Flask/issues"
