@@ -24,4 +24,3 @@
 #### "pytest" tests using @pytest.fixture, catching sys.stdout, using the BeautifulSoup scraping library and the built-in 
 #### regex module. As a result, using the coverage report, the coverage of the application modules with tests was checked
 #### and the requirements.txt file was created with a list of all application dependencies!
-###
