@@ -3,7 +3,6 @@
 ## Package "Convert and store data to the database" - this software package is an open source product
 ## and is distributed free of charge)
 
-
 ### Our project is developing and based on the same Report Monaco Racing 2018 Flask web application with
 ### a full-fledged Restful API technology. This project received new functionality through the use of modern SQLite3
 ### databases and ORM technologies, namely the flask_sqlalchemy applications, were used to work with them. And in testing
@@ -15,7 +14,6 @@
 ### functions using UnitTest. And a full version swagger web documentation for users! Where they can test all 
 ### the paths and options of our application parameters and see the correct server feedback there!
 ###
-
 
 
 #### In turn our web application a designed in a modern dark style with CSS that calculates and compiles the Monaco 2018 F1
