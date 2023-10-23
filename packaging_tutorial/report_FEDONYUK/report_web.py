@@ -4,9 +4,11 @@ from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
 
+
 from packaging_tutorial.report_FEDONYUK.models import db
 from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
 from packaging_tutorial.report_FEDONYUK.report_api import ReportResource, DriversResource
+
 
 _BASE_DIR = os.path.join(os.path.dirname(__file__), '../data/')
 DATABASE_FILE = os.path.join(_BASE_DIR, 'monaco.db')
@@ -53,6 +55,7 @@ def show_drivers():
         return render_template('report.html', report=get_report(driver=driver_id))
 
     return render_template('drivers.html', drivers=get_drivers(asc))
+
 
 
 if __name__ == '__main__':
