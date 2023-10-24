@@ -24,15 +24,8 @@ swagger = Swagger(app, template_file='Swagger/swagger.yml')
 api.add_resource(ReportResource, 'report/')
 api.add_resource(DriversResource, 'report/drivers/')
 
-redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+redis_client = redis.StrictRedis(host='localhost', port=6379)
 cache = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS': redis_client})
-
-
-def make_cache_key(*args, **kwargs):
-    path = request.path
-    args = str(hash(frozenset(request.args.items())))
-    # print(path + args)
-    return path + args
 
 
 @app.errorhandler(404)
@@ -42,7 +35,7 @@ def handle_not_found_error(error):
 
 
 @app.route('/report/')
-@cache.cached(timeout=60, key_prefix=lambda: make_cache_key())
+@cache.cached(timeout=30)
 def show_report():
     """The function processes end-points '/' & '/report/' with query-parameters order and driver_id."""
     order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'
@@ -56,7 +49,7 @@ def show_report():
 
 
 @app.route('/report/drivers/')
-@cache.cached(timeout=60, key_prefix=lambda: make_cache_key())
+@cache.cached(timeout=30)
 def show_drivers():
     """The function processes end-point '/report/drivers/' with query-parameters order and driver_id."""
     order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'
