@@ -4,7 +4,6 @@ from flask_restful import Resource
 from dicttoxml import dicttoxml
 
 from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
-from packaging_tutorial.report_FEDONYUK.report_web import cache
 
 
 def generate_response(report, report_format):

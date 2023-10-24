@@ -3,6 +3,8 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
+from flask_caching import Cache
+import redis
 
 from packaging_tutorial.report_FEDONYUK.models import db
 from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
@@ -23,6 +25,11 @@ api.add_resource(ReportResource, 'report/')
 api.add_resource(DriversResource, 'report/drivers/')
 
 
+redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+
+cache = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS': redis_client})
+
+
 @app.errorhandler(404)
 def handle_not_found_error(error):
     """Handle 404 Not Found error"""
@@ -30,6 +37,7 @@ def handle_not_found_error(error):
 
 
 @app.route('/report/')
+@cache.cached(timeout=60)
 def show_report():
     """The function processes end-points '/' & '/report/' with query-parameters order and driver_id."""
     order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'
@@ -43,6 +51,7 @@ def show_report():
 
 
 @app.route('/report/drivers/')
+@cache.cached(timeout=60)
 def show_drivers():
     """The function processes end-point '/report/drivers/' with query-parameters order and driver_id."""
     order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'
@@ -56,4 +65,4 @@ def show_drivers():
 
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
