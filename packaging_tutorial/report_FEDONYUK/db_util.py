@@ -1,5 +1,6 @@
 """---This module provides utilities for working with the database---"""
 from packaging_tutorial.report_FEDONYUK.models import db, DriverModel
+from packaging_tutorial.report_FEDONYUK.report_web import cache
 
 
 def get_report(asc: bool = True, driver: str = None) -> list[list]:
@@ -24,4 +25,3 @@ def get_drivers(asc: bool = True) -> list[list]:
         drivers.reverse()
 
     return drivers
-
