@@ -5,6 +5,7 @@ from flask_restful import Api
 from flasgger import Swagger
 from flask_caching import Cache
 import redis
+from loguru import logger
 
 from packaging_tutorial.report_FEDONYUK.models import db
 from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
@@ -12,6 +13,8 @@ from packaging_tutorial.report_FEDONYUK.report_api import ReportResource, Driver
 
 _BASE_DIR = os.path.join(os.path.dirname(__file__), '../data/')
 DATABASE_FILE = os.path.join(_BASE_DIR, 'monaco.db')
+
+logger.add('debug.log', colorize=True, format='{time} {level} {message}', level='DEBUG')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_FILE
