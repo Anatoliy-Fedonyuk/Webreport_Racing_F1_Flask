@@ -3,8 +3,7 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
-from werkzeug.utils import import_string
-from flask_cache import Cache
+from flask_caching import Cache
 import redis
 
 from packaging_tutorial.report_FEDONYUK.models import db
@@ -26,7 +25,13 @@ api.add_resource(ReportResource, 'report/')
 api.add_resource(DriversResource, 'report/drivers/')
 
 redis_client = redis.StrictRedis(host='localhost', port=6379)
-cache = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS': redis_client})
+# Создайте объект кеша для каждого эндпоинта
+cache_report = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_KEY_PREFIX': 'report'})
+cache_drivers = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_KEY_PREFIX': 'drivers'})
+
+# Привяжите кеш к каждому эндпоинту
+cache_report.init_app(app)
+cache_drivers.init_app(app)
 
 
 @app.errorhandler(404)
@@ -36,7 +41,7 @@ def handle_not_found_error(error):
 
 
 @app.route('/report/')
-@cache.cached(timeout=60, key_prefix='report_')
+@cache_report.cached(timeout=30, key_prefix='report')
 def show_report():
     """The function processes end-points '/' & '/report/' with query-parameters order and driver_id."""
     order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'
@@ -50,7 +55,7 @@ def show_report():
 
 
 @app.route('/report/drivers/')
-@cache.cached(timeout=60, key_prefix='drivers_')
+@cache_drivers.cached(timeout=30, key_prefix='drivers')
 def show_drivers():
     """The function processes end-point '/report/drivers/' with query-parameters order and driver_id."""
     order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'
