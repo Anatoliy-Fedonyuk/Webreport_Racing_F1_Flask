@@ -3,7 +3,8 @@ import os
 from flask import Flask, render_template, request, redirect
 from flask_restful import Api
 from flasgger import Swagger
-from flask_caching import Cache
+from werkzeug.utils import import_string
+from flask_cache import Cache
 import redis
 
 from packaging_tutorial.report_FEDONYUK.models import db
@@ -35,7 +36,7 @@ def handle_not_found_error(error):
 
 
 @app.route('/report/')
-@cache.cached(timeout=30)
+@cache.cached(timeout=60, key_prefix='report_')
 def show_report():
     """The function processes end-points '/' & '/report/' with query-parameters order and driver_id."""
     order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'
@@ -49,7 +50,7 @@ def show_report():
 
 
 @app.route('/report/drivers/')
-@cache.cached(timeout=30)
+@cache.cached(timeout=60, key_prefix='drivers_')
 def show_drivers():
     """The function processes end-point '/report/drivers/' with query-parameters order and driver_id."""
     order = request.args.get('order', 'asc')  # Get the 'order' parameter from the request, default 'asc'

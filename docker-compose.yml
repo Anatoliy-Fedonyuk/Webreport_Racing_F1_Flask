@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  pgdb:
+    image: redis:latest
+    container_name: REDIS
+    restart: always
+    ports:
+      - '5432:5432'
