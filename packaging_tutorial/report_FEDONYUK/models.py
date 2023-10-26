@@ -88,7 +88,7 @@ def format_timedelta(time_obj: timedelta) -> str:
 
 
 def model_creation():
-    """Function writes the data of the Driver of the model SQLite"""
+    """The function creates a SQLite model and writes Driver data to this model."""
     try:
         with db.session.begin():
             logger.info("[INFO] SQLite connection opened.")
