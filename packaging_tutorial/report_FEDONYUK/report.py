@@ -3,6 +3,7 @@ import os
 from datetime import datetime, timedelta
 from pydantic import BaseModel, Field, model_validator
 from tabulate import tabulate
+from loguru import logger
 
 ABBREVIATION_TXT = "abbreviations.txt"
 START_LOG = "start.log"
@@ -117,8 +118,12 @@ def format_timedelta(time_obj: timedelta) -> str:
 
 
 if __name__ == '__main__':
-    # print_report()
-    print_report(driver='KRF')
-    print_report(False)
-    # print_list_drivers(False)
-    print_list_drivers()
+    try:
+        logger.info("[INFO] The module <report> started")
+        # print_report()
+        print_report(driver='KRF')
+        print_report(False)
+        # print_list_drivers(False)
+        print_list_drivers()
+    except Exception as ex:
+        logger.error(f"[ERROR] An unexpected error occurred: {ex}")

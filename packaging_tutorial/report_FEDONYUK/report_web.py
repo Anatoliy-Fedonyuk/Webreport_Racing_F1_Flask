@@ -1,4 +1,4 @@
-"""This module is creation Web Report of Monaco 2018 Racing using Flask framework"""
+"""This module create Web Report of Monaco 2018 Racing using Flask framework"""
 import os
 from flask import Flask, render_template, request, redirect
 from flask_restful import Api
@@ -28,11 +28,10 @@ api.add_resource(ReportResource, 'report/')
 api.add_resource(DriversResource, 'report/drivers/')
 
 redis_client = redis.StrictRedis(host='localhost', port=6379)
-# Создайте объект кеша для каждого эндпоинта
+
 cache_report = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_KEY_PREFIX': 'report'})
 cache_drivers = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_KEY_PREFIX': 'drivers'})
 
-# Привяжите кеш к каждому эндпоинту
 cache_report.init_app(app)
 cache_drivers.init_app(app)
 
