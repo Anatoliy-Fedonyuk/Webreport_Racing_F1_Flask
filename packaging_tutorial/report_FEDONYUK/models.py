@@ -91,3 +91,5 @@ def model_creation():
         driver_model = DriverModel(driver)
         db.session.add(driver_model)
     db.session.commit()
+
+
