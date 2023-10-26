@@ -3,6 +3,10 @@ import os
 from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import SQLAlchemyError
+from loguru import logger
+
+logger.add('debug.log', colorize=True, format='{time} {level} {message}', level='DEBUG')
 
 ABBREVIATION_TXT = "abbreviations.txt"
 START_LOG = "start.log"
@@ -85,11 +89,19 @@ def format_timedelta(time_obj: timedelta) -> str:
 
 def model_creation():
     """Function writes the data of the Driver of the model SQLite"""
-    db.create_all()
-    drivers = sorted(get_drivers_all(), key=lambda x: x.best_lap)
-    for driver in drivers:
-        driver_model = DriverModel(driver)
-        db.session.add(driver_model)
-    db.session.commit()
-
-
+    try:
+        with db.session.begin():
+            logger.info("[INFO] SQLite connection opened.")
+            db.create_all()
+            drivers = sorted(get_drivers_all(), key=lambda x: x.best_lap)
+            for driver in drivers:
+                driver_model = DriverModel(driver)
+                db.session.add(driver_model)
+            logger.info("[INFO] model sqlalchemy 'DriverModel' create successful!")
+            db.session.commit()
+    except SQLAlchemyError as e:
+        logger.error(f"[ERROR] An error occurred in model_creation: {e}")
+    finally:
+        db.session.close()
+        logger.info("[INFO] SQLAlchemy session closed.")
+        return None
