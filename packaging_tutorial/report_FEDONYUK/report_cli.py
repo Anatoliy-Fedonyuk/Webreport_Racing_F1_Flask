@@ -4,7 +4,7 @@ from loguru import logger
 
 from packaging_tutorial.report_FEDONYUK.report import get_drivers, print_report
 
-logger.add('debug.log', colorize=True, format='{time} {level} {message}', level='DEBUG')
+logger.add('debug.log', format='{time} {level} {message}', level='DEBUG')
 
 
 @click.command()

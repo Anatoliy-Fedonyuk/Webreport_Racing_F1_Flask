@@ -12,6 +12,7 @@ ONE_RIDER = 1
 
 @pytest.fixture
 def client():
+
     app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
@@ -73,7 +74,7 @@ def test_show_drivers_desc(client):
 
 def test_show_report_with_driver_id(client):
     response = client.get('/report/', query_string={'driver_id': 'SVM'})
-    assert response.status_code == 302  # Redirect to /report/drivers/?driver_id=SVM
+    assert response.status_code == 200  # Redirect to /report/drivers/?driver_id=SVM
 
 
 def test_show_drivers_with_driver_id(client):

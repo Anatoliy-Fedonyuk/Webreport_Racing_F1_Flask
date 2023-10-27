@@ -6,7 +6,7 @@ from loguru import logger
 
 from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
 
-logger.add('debug.log', colorize=True, format='{time} {level} {message}', level='DEBUG')
+logger.add('debug.log', format='{time} {level} {message}', level='DEBUG')
 
 
 def generate_response(report, report_format):

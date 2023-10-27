@@ -6,6 +6,7 @@ from flasgger import Swagger
 from flask_caching import Cache
 import redis
 from loguru import logger
+from sqlalchemy.exc import SQLAlchemyError
 
 from packaging_tutorial.report_FEDONYUK.models import db
 from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
@@ -14,12 +15,12 @@ from packaging_tutorial.report_FEDONYUK.report_api import ReportResource, Driver
 _BASE_DIR = os.path.join(os.path.dirname(__file__), '../data/')
 DATABASE_FILE = os.path.join(_BASE_DIR, 'monaco.db')
 
-logger.add('debug.log', colorize=True, format='{time} {level} {message}', level='DEBUG')
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_FILE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+
+logger.add('debug.log', colorize=True, format='{time} {level} {message}', level='DEBUG')
 
 api = Api(app, prefix='/api/v1/')
 swagger = Swagger(app, template_file='Swagger/swagger.yml')
@@ -29,8 +30,8 @@ api.add_resource(DriversResource, 'report/drivers/')
 
 redis_client = redis.StrictRedis(host='localhost', port=6379)
 
-cache_report = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_KEY_PREFIX': 'report'})
-cache_drivers = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_KEY_PREFIX': 'drivers'})
+cache_report = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS': redis_client, 'CACHE_KEY_PREFIX': 'report'})
+cache_drivers = Cache(app, config={'CACHE_TYPE': 'redis', 'CACHE_REDIS': redis_client, 'CACHE_KEY_PREFIX': 'drivers'})
 
 cache_report.init_app(app)
 cache_drivers.init_app(app)
@@ -39,7 +40,15 @@ cache_drivers.init_app(app)
 @app.errorhandler(404)
 def handle_not_found_error(error):
     """Handle 404 Not Found error"""
+    logger.info("[INFO] File Not Found!}")
     return redirect('/apidocs/'), 404
+
+
+@app.errorhandler(SQLAlchemyError)
+def handle_db_error(error):
+    """Handle database-related errors."""
+    logger.error(f"[ERROR] Database error: {error}")
+    return render_template('error.html', error_message="Database error"), 500
 
 
 @app.route('/report/')

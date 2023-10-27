@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 from loguru import logger
 
-logger.add('debug.log', colorize=True, format='{time} {level} {message}', level='DEBUG')
+logger.add('debug.log', format='{time} {level} {message}', level='DEBUG')
 
 ABBREVIATION_TXT = "abbreviations.txt"
 START_LOG = "start.log"

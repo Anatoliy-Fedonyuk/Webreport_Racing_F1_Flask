@@ -3,7 +3,7 @@ from loguru import logger
 
 from packaging_tutorial.report_FEDONYUK.models import db, DriverModel
 
-logger.add('debug.log', colorize=True, format='{time} {level} {message}', level='DEBUG')
+logger.add('debug.log', format='{time} {level} {message}', level='DEBUG')
 
 
 def get_report(asc: bool = True, driver: str = None) -> list[list]:

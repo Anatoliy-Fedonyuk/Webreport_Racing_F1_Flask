@@ -3,6 +3,6 @@ version: '3'
 services:
   pgdb:
     image: redis:latest
-    container_name: REDIS
+    container_name: Cache-Redis
     ports:
       - "6379:6379"
