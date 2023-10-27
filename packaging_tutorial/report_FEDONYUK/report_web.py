@@ -40,7 +40,7 @@ cache_drivers.init_app(app)
 @app.errorhandler(404)
 def handle_not_found_error(error):
     """Handle 404 Not Found error"""
-    logger.info("[INFO] File Not Found!}")
+    logger.info("[INFO] File Not Found!")
     return redirect('/apidocs/'), 404
 
 
