@@ -18,7 +18,7 @@ def generate_response(report, report_format):
         headers = {'Content-Type': 'application/xml'}
         response = make_response(xml)
         response.headers = headers
-        return response, 200
+        return response
     logger.error("[ERROR] Invalid format requested.")
     return {'error': 'Invalid format'}, 400
 
