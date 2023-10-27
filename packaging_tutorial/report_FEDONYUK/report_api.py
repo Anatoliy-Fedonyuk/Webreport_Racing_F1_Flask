@@ -46,8 +46,8 @@ class DriversResource(Resource):
             driver_id = request.args.get('driver_id', None)
             if 'driver_id' in request.args:
                 drivers_list = get_report(driver=driver_id)
-            logger.info("Drivers data retrieved successfully.")
+            logger.info("[INFO] Drivers data retrieved successfully.")
             return generate_response(drivers_list, report_format)
         except Exception as e:
-            logger.error(f"An error occurred in DriversResource: {e}")
+            logger.error(f"[ERROR] An error occurred in DriversResource: {e}")
             return {'error': 'An error occurred'}, 500
