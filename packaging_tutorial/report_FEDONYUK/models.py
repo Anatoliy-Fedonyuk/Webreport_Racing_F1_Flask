@@ -105,3 +105,9 @@ def model_creation():
         db.session.close()
         logger.info("[INFO] SQLAlchemy session closed.")
         return None
+
+
+# if __name__ == "__main__":
+#     with app.app_context():
+#         model_creation()
+

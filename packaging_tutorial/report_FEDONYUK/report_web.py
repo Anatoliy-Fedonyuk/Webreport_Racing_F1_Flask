@@ -8,7 +8,7 @@ import redis
 from loguru import logger
 from sqlalchemy.exc import SQLAlchemyError
 
-from packaging_tutorial.report_FEDONYUK.models import db
+from packaging_tutorial.report_FEDONYUK.models import db, model_creation
 from packaging_tutorial.report_FEDONYUK.db_util import get_report, get_drivers
 from packaging_tutorial.report_FEDONYUK.report_api import ReportResource, DriversResource
 
@@ -80,4 +80,6 @@ def show_drivers():
 
 
 if __name__ == '__main__':
+    # with app.app_context():   # to create and populate a database model
+    #     model_creation()
     app.run(debug=False)
